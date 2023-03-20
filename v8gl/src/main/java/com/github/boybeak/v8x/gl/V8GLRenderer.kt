@@ -54,4 +54,24 @@ class V8GLRenderer(private val jsFile: File, private val v8GLView: V8GLView) : W
         compileShader(WebGLShader.from(shader))
     }
 
+    @V8Method(jsFuncName = "getShaderParameter")
+    fun v8GetShaderParameter(shader: V8Object, pname: GLenum): Any {
+        return getShaderParameter(WebGLShader.from(shader), pname)
+    }
+
+    @V8Method(jsFuncName = "createProgram")
+    fun v8CreateProgram(): V8Object {
+        return createProgram().toV8Object(v8)
+    }
+
+    @V8Method(jsFuncName = "attachShader")
+    fun v8AttachShader(program: V8Object, shader: V8Object) {
+        attachShader(WebGLProgram.from(program), WebGLShader.from(shader))
+    }
+
+    @V8Method(jsFuncName = "linkProgram")
+    fun v8LinkProgram(program: V8Object) {
+        linkProgram(WebGLProgram.from(program))
+    }
+
 }
