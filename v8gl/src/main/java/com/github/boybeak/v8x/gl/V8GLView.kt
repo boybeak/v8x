@@ -7,6 +7,7 @@ import android.util.Log
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.ext.registerV8Methods
+import com.github.boybeak.v8x.gl.webgl.Constants
 import com.github.boybeak.v8x.gl.webgl.ICanvas
 import com.github.boybeak.v8x.gl.webgl.IWebGLRenderingContext
 import java.io.File
@@ -41,7 +42,9 @@ class V8GLView : GLSurfaceView, ICanvas {
         Log.d(TAG, "getContextV8 type=$type")
         val iWebGLContext = getContext(type)
         val ctxV8 = V8Object(v8glRenderer.v8).apply {
-            add("COLOR_BUFFER_BIT", 0x00004000)
+            Constants.getMap().forEach { (t, u) ->
+                add(t, u)
+            }
         }
         ctxV8.registerV8Methods(iWebGLContext)
         return ctxV8

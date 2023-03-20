@@ -5,10 +5,7 @@ import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.ext.registerV8Methods
-import com.github.boybeak.v8x.gl.webgl.GLbitfield
-import com.github.boybeak.v8x.gl.webgl.GLclampf
-import com.github.boybeak.v8x.gl.webgl.IWebGLRenderingContext
-import com.github.boybeak.v8x.gl.webgl.WebGLRenderingContext
+import com.github.boybeak.v8x.gl.webgl.*
 import java.io.File
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -41,4 +38,20 @@ class V8GLRenderer(private val jsFile: File, private val v8GLView: V8GLView) : W
     override fun clear(mask: GLbitfield) {
         super.clear(mask)
     }
+
+    @V8Method(jsFuncName = "createShader")
+    fun v8CreateShader(type: GLenum): V8Object {
+        return createShader(type).toV8Object(v8)
+    }
+
+    @V8Method(jsFuncName = "shaderSource")
+    fun v8ShaderSource(shader: V8Object, source: String) {
+        shaderSource(WebGLShader.from(shader), source)
+    }
+
+    @V8Method(jsFuncName = "compileShader")
+    fun v8CompileShader(shader: V8Object) {
+        compileShader(WebGLShader.from(shader))
+    }
+
 }

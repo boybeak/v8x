@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<AppCompatButton>(R.id.actionBtn).setOnClickListener {
             v8.executeScript(this@MainActivity.readAssetsText("demo.js"))
         }
+        findViewById<AppCompatButton>(R.id.webglBtn).setOnClickListener {
+            startActivity(Intent(this, WebGLActivity::class.java))
+        }
         findViewById<AppCompatButton>(R.id.gameBtn).setOnClickListener {
             startActivity(Intent(this, GameActivity::class.java))
         }
