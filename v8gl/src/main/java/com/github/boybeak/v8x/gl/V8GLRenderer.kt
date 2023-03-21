@@ -74,4 +74,44 @@ class V8GLRenderer(private val jsFile: File, private val v8GLView: V8GLView) : W
         linkProgram(WebGLProgram.from(program))
     }
 
+    @V8Method(jsFuncName = "getProgramParameter")
+    fun v8GetProgramParameter(program: V8Object, pname: GLenum): Any {
+        return getProgramParameter(WebGLProgram.from(program), pname)
+    }
+
+    @V8Method(jsFuncName = "useProgram")
+    fun v8UseProgram(program: V8Object) {
+        useProgram(WebGLProgram.from(program))
+    }
+
+    @V8Method(jsFuncName = "getAttribLocation")
+    fun v8GetAttribLocation(program: V8Object, name: String): GLint {
+        return getAttribLocation(WebGLProgram.from(program), name)
+    }
+
+    @V8Method
+    override fun vertexAttrib1f(index: GLint, x: Float) {
+        super.vertexAttrib1f(index, x)
+    }
+
+    @V8Method
+    override fun vertexAttrib2f(index: GLint, x: Float, y: Float) {
+        super.vertexAttrib2f(index, x, y)
+    }
+
+    @V8Method
+    override fun vertexAttrib3f(index: GLint, x: Float, y: Float, z: Float) {
+        super.vertexAttrib3f(index, x, y, z)
+    }
+
+    @V8Method
+    override fun vertexAttrib4f(index: GLint, x: Float, y: Float, z: Float, w: Float) {
+        super.vertexAttrib4f(index, x, y, z, w)
+    }
+
+    @V8Method
+    override fun drawArrays(mode: GLint, first: GLint, count: GLsizei) {
+        super.drawArrays(mode, first, count)
+    }
+
 }
