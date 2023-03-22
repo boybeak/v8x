@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatButton
+import com.eclipsesource.v8.NodeJS
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.R
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         v8.add("native", nativeV8)
         findViewById<AppCompatButton>(R.id.actionBtn).setOnClickListener {
             v8.executeScript(this@MainActivity.readAssetsText("demo.js"))
+        }
+        findViewById<AppCompatButton>(R.id.nodeJsBtn).setOnClickListener {
+            startActivity(Intent(this, NodeJSActivity::class.java))
         }
         findViewById<AppCompatButton>(R.id.webglBtn).setOnClickListener {
             startActivity(Intent(this, WebGLActivity::class.java))

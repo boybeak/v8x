@@ -13,6 +13,12 @@
         android:text="GO"
         />
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/nodeJsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NodeJs"
+        />
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/webglBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

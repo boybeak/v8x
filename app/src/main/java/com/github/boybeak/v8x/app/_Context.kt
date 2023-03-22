@@ -14,6 +14,9 @@ fun Context.readAssetsText(assetsPath: String, charset: Charset = Charsets.UTF_8
 }
 
 fun Context.copyAssetsTo(assetsPath: String, dstFile: File) {
+    if (dstFile.parentFile?.exists() != true) {
+        dstFile.parentFile?.mkdirs()
+    }
     val fos = FileOutputStream(dstFile)
     assets.open(assetsPath).run {
         copyTo(fos)
