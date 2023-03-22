@@ -36,15 +36,18 @@ object V8Helper {
                 else -> v8obj.add(name, (field.get(obj) as? V8Binding)?.getMyBinding(v8obj.runtime))
             }
             if (v8Field.binding) {
-                bindingList.add(name, V8Object(v8obj.runtime).apply {
+                val item = V8Object(v8obj.runtime).apply {
                     add(V8Manager.KEY_NAME, name)
                     add(V8Manager.KEY_IS_V8BINDING_TYPE, V8Binding::class.java.isAssignableFrom(field.type))
                     add(V8Manager.KEY_TYPE_NAME, field.type.name)
-                })
+                }
+                bindingList.add(name, item)
+                item.close()
             }
             field.isAccessible = false
         }
         v8obj.add(V8Manager.KEY_BINDING_FIELD_LIST, bindingList)
+        bindingList.close()
     }
     fun isAcceptableV8Type(type: Class<*>): Boolean {
         return Int::class.java == type || Boolean::class.java == type || Double::class.java == type

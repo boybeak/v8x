@@ -83,7 +83,7 @@ class V8Manager private constructor(private val v8: V8){
         }
         private fun release(v8: V8) {
             Log.d(TAG, "release")
-            v8ManMap.remove(v8)
+            v8ManMap.remove(v8)?.release()
         }
     }
 
@@ -154,6 +154,7 @@ class V8Manager private constructor(private val v8: V8){
         V8Helper.registerV8Fields(v8obj, obj)
 
         val v8objProxy = createJSProxy(v8obj)
+        v8obj.close()
         v8.executeFunction("setBinding", V8Array(v8).apply {
             push(obj.getBindingId())
             push(v8objProxy)
@@ -199,6 +200,10 @@ class V8Manager private constructor(private val v8: V8){
 
             obj.onBindingChanged(target, Key.from(fieldInfo), newValue, oldValue)
         }
+    }
+
+    private fun release() {
+        bindingMapNative.clear()
     }
 
     class V8Exception(message: String) : Exception(message)

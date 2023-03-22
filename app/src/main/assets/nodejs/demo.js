@@ -1,1 +1,3 @@
-import { initWebGL } from "./util.js";
+import './util.js';
+
+hello();
