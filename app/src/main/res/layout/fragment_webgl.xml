@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.boybeak.v8x.gl.V8GLView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webGLView"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-</com.github.boybeak.v8x.gl.V8GLView>
+    <com.github.boybeak.v8x.canvas.v8.V8WebCanvasView
+        android:id="@+id/webGLView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/actionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Action"
+        android:layout_gravity="bottom|center_horizontal"
+        />
+</FrameLayout>

@@ -1,21 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
 }
 apply from: '../versions.gradle'
 
 android {
-    namespace 'com.github.boybeak.v8x'
+    namespace 'com.github.boybeak.v8x.canvas'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.github.boybeak.v8x.app"
-        minSdk 21
+        minSdk 19
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -38,17 +36,11 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
-    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
-
-    implementation project(path: ':v8binding')
-    implementation project(path: ':v8ext')
-    implementation project(path: ':v8canvas')
-//    implementation project(path: ':v8gl')
-
-    implementation 'com.github.boybeak:any-adapter:1.4.1'
-    implementation "com.github.boybeak:canvas:${CANVAS_VERSION}"
+    compileOnly project(path: ":v8binding")
+    compileOnly project(path: ":v8ext")
+    compileOnly 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
+    compileOnly "com.github.boybeak:canvas:${CANVAS_VERSION}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
