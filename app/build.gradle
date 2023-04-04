@@ -6,12 +6,12 @@ apply from: '../versions.gradle'
 
 android {
     namespace 'com.github.boybeak.v8x'
-    compileSdk 33
+    compileSdk COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId "com.github.boybeak.v8x.app"
-        minSdk 21
-        targetSdk 33
+        minSdk MIN_SDK_VERSION
+        targetSdk TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
 
