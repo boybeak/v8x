@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -32,4 +33,25 @@ android {
 
 dependencies {
     compileOnly 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.boybeak.v8x'
+                artifactId = 'v8binding'
+                version = '0.0.1'
+            }
+            debug(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.boybeak.v8x'
+                artifactId = 'v8binding'
+                version = '0.0.1'
+            }
+        }
+    }
 }
