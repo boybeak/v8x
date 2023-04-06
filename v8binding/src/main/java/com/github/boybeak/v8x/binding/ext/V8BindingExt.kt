@@ -1,4 +1,4 @@
-package com.github.boybeak.v8x.ext
+package com.github.boybeak.v8x.binding.ext
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object

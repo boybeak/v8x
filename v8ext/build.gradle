@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-    compileOnly project(path: ':v8binding')
     compileOnly 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
 }
 

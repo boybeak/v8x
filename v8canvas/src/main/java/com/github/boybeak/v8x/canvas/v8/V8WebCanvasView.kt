@@ -6,10 +6,9 @@ import android.util.Log
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.canvas.CanvasView
-import com.github.boybeak.canvas.ICanvasRenderer
 import com.github.boybeak.v8x.binding.annotation.V8Method
+import com.github.boybeak.v8x.binding.ext.registerV8Methods
 import com.github.boybeak.v8x.canvas.webgl.IWebGLRenderingContext
-import com.github.boybeak.v8x.ext.registerV8Methods
 import com.github.boybeak.v8x.canvas.webgl.Constants
 import java.io.File
 

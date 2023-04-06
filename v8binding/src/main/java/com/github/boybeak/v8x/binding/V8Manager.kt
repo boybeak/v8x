@@ -12,7 +12,7 @@ class V8Manager private constructor(private val v8: V8){
         private const val FUNC_CREATE_JS_PROXY = "v8CreateProxy"
         private const val KEY_BINDING_ID = "bindingId"
         internal const val KEY_NAME = "name"
-        internal const val KEY_BINDING_FIELD_LIST = "bindingFieldList"
+        internal const val KEY_BINDING_FIELD_MAP = "bindingFieldMap"
         internal const val KEY_IS_V8BINDING_TYPE = "isV8BindingType"
         internal const val KEY_TYPE_NAME = "typeName"
         private const val KEY_IS_JS_PROXY_OBJ = "isJsProxyObj"
@@ -42,8 +42,8 @@ class V8Manager private constructor(private val v8: V8){
             function $FUNC_CREATE_JS_PROXY(obj) {
                 return new Proxy(obj, {
                     set: function (target, key, value) {
-                        if (key in target.$KEY_BINDING_FIELD_LIST) {
-                            
+                        if (target.$KEY_BINDING_FIELD_MAP.has(key)) {
+                            console.log(key, ' In Map');
                             let oldValue = target[key];
                             if (oldValue == undefined) {
                                 oldValue = null;
@@ -53,15 +53,16 @@ class V8Manager private constructor(private val v8: V8){
                             if (value == undefined) {
                                 newValue = null;
                             }
-                            let fieldInfo = target.$KEY_BINDING_FIELD_LIST[key]
+                            let fieldInfo = target.$KEY_BINDING_FIELD_MAP.get(key);
                             if (fieldInfo.$KEY_IS_V8BINDING_TYPE) {
                                 // if is V8Binding type
                                 dispatchV8BindingChange(target, fieldInfo, newValue, oldValue);
                             } else {
                                 // other types
-                                dispatchBasicTypeChange(target, fieldInfo, newValue, oldValue)
+                                dispatchBasicTypeChange(target, fieldInfo, newValue, oldValue);
                             }
                         } else {
+                            console.log(key, ' NOT In Map');
                             target[key] = value;
                         }
                     }

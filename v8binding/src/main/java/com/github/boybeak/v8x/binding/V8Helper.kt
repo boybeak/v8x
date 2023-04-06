@@ -3,6 +3,8 @@ package com.github.boybeak.v8x.binding
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Field
 import com.github.boybeak.v8x.binding.annotation.V8Method
+import com.github.boybeak.v8x.ext.newMap
+import com.github.boybeak.v8x.ext.set
 
 object V8Helper {
     fun registerV8Methods(v8obj: V8Object, otherObj: Any) {
@@ -16,7 +18,7 @@ object V8Helper {
         }
     }
     fun registerV8Fields(v8obj: V8Object, obj: Any) {
-        val bindingList = V8Object(v8obj.runtime)
+        val bindingMap = v8obj.runtime.newMap() // Create a js map
 
         for (field in obj::class.java.declaredFields) {
             if (!field.isAnnotationPresent(V8Field::class.java)) {
@@ -41,13 +43,13 @@ object V8Helper {
                     add(V8Manager.KEY_IS_V8BINDING_TYPE, V8Binding::class.java.isAssignableFrom(field.type))
                     add(V8Manager.KEY_TYPE_NAME, field.type.name)
                 }
-                bindingList.add(name, item)
+                bindingMap.set(name, item)
                 item.close()
             }
             field.isAccessible = false
         }
-        v8obj.add(V8Manager.KEY_BINDING_FIELD_LIST, bindingList)
-        bindingList.close()
+        v8obj.add(V8Manager.KEY_BINDING_FIELD_MAP, bindingMap)
+        bindingMap.close()
     }
     fun isAcceptableV8Type(type: Class<*>): Boolean {
         return Int::class.java == type || Boolean::class.java == type || Double::class.java == type

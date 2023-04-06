@@ -30,4 +30,16 @@
         android:layout_height="wrap_content"
         android:text="Game"
         />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bifBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BuildInFields"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/mapBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v8Map"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>
