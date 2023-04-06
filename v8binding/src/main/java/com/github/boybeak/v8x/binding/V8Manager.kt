@@ -65,6 +65,7 @@ class V8Manager private constructor(private val v8: V8){
                             console.log(key, ' NOT In Map');
                             target[key] = value;
                         }
+                        return true;
                     }
                 })
             }
