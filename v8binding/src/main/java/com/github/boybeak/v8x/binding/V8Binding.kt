@@ -10,13 +10,10 @@ interface V8Binding {
     }
     fun getBindingId(): String
     fun getMyBinding(v8: V8): V8Object {
-        Log.d(TAG, "getMyBinding")
         return V8Manager.obtain(v8).run {
             if (!isBound(getBindingId())) {
-                Log.d(TAG, "getMyBinding not bound")
                 createBinding(this@V8Binding)
             } else {
-                Log.d(TAG, "getMyBinding bound")
                 getBinding(getBindingId())
             }
         }

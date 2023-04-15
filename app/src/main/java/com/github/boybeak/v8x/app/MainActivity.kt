@@ -47,23 +47,18 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<AppCompatButton>(R.id.mapBtn).setOnClickListener {
             v8.executeScript("""
-                function isMap(obj) {
-                    return obj instanceof Map;
-                }
+                const user1 = native.getUser();
+                const user2 = native.getUser();
+                console.log(user1 == user2);
             """.trimIndent())
-            val map = v8.executeObjectScript("new Map();")
-            val isMap = v8.executeBooleanFunction("isMap", V8Array(v8).push(map))
-            val notMap = V8Object(v8)
-            map.executeFunction("set", V8Array(v8).push("name").push("John"))
-            val name = map.executeStringFunction("get", V8Array(v8).push("name"))
-            Log.d(TAG, "a.type=${map.v8Type} isMap=${isMap} ${v8.executeBooleanFunction("isMap", V8Array(v8).push(notMap))} getName=${name}")
         }
     }
 
     private class Native(val v8: V8) {
+        val user = User()
         @V8Method
         fun getUser(): V8Object {
-            return User().getMyBinding(v8)
+            return user.getMyBinding(v8)
         }
     }
 

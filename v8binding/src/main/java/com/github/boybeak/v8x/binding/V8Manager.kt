@@ -21,6 +21,9 @@ class V8Manager private constructor(private val v8: V8){
             const v8BindingMap = new Map();
             function setBinding(bindingId, v8obj) {
                 if (hasBinding(bindingId)) {
+                    if (getBinding(bindingId) == v8obj) {
+                        return
+                    }
                     throwError('Already bound for bindingId ' + bindingId);
                 }
                 v8BindingMap.set(bindingId, v8obj);
@@ -142,10 +145,10 @@ class V8Manager private constructor(private val v8: V8){
         if (!isBound(bindingId)) {
             throwError("Not bound for $bindingId")
         }
-        return v8.executeObjectFunction("getBinding", V8Array(v8).apply { add(KEY_BINDING_ID, bindingId) })
+        return v8.executeObjectFunction("getBinding", V8Array(v8).apply { push(bindingId) })
     }
     fun isBound(bindingId: String): Boolean {
-        return v8.executeBooleanFunction("hasBinding", V8Array(v8).apply { add(KEY_BINDING_ID, bindingId) })
+        return v8.executeBooleanFunction("hasBinding", V8Array(v8).apply { push(bindingId) })
     }
 
     internal fun createBinding(obj: V8Binding): V8Object {
