@@ -13,6 +13,8 @@ import com.github.boybeak.v8x.app.model.User
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.binding.ext.manager
 import com.github.boybeak.v8x.binding.ext.registerV8Methods
+import com.github.boybeak.v8x.ext.newMap
+import com.github.boybeak.v8x.ext.set
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,10 +48,14 @@ class MainActivity : AppCompatActivity() {
             v8.executeScript(this@MainActivity.readAssetsText("build_in_fields.js"))
         }
         findViewById<AppCompatButton>(R.id.mapBtn).setOnClickListener {
+            v8.manager
+            val map = v8.newMap()
+            val abc = V8Object(v8)
+            map.set("abc", abc)
+
+            v8.add("map", map)
             v8.executeScript("""
-                const user1 = native.getUser();
-                const user2 = native.getUser();
-                console.log(user1 == user2);
+                console.log('map.size=', map.size);
             """.trimIndent())
         }
     }
