@@ -22,6 +22,19 @@ class User : V8BindingAdapter {
         return hashCode().toString()
     }
 
+    override fun getAdditionalPropertyNames(): Array<String>? {
+        return arrayOf("age")
+    }
+
+    override fun onAdditionalPropertyChanged(
+        target: V8Object,
+        propertyName: String,
+        newValue: Any?,
+        oldValue: Any?
+    ) {
+        Log.d(TAG, "onAdditionalPropertyChanged propertyName=$propertyName newValue=$newValue")
+    }
+
     override fun onStringBindingChanged(
         target: V8Object,
         fieldName: String,

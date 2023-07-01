@@ -12,7 +12,8 @@ class V8Manager private constructor(private val v8: V8){
         private const val FUNC_CREATE_JS_PROXY = "v8CreateProxy"
         private const val KEY_BINDING_ID = "bindingId"
         internal const val KEY_NAME = "name"
-        internal const val KEY_BINDING_FIELD_LIST = "bindingFieldList"
+        internal const val KEY_BINDING_FIELD_MAP = "_bindingFieldMap"
+        internal const val KEY_ADDITIONAL_PROPERTIES = "_additionalProperties"
         internal const val KEY_IS_V8BINDING_TYPE = "isV8BindingType"
         internal const val KEY_TYPE_NAME = "typeName"
         private const val KEY_IS_JS_PROXY_OBJ = "isJsProxyObj"
@@ -21,6 +22,9 @@ class V8Manager private constructor(private val v8: V8){
             const v8BindingMap = new Map();
             function setBinding(bindingId, v8obj) {
                 if (hasBinding(bindingId)) {
+                    if (getBinding(bindingId) == v8obj) {
+                        return
+                    }
                     throwError('Already bound for bindingId ' + bindingId);
                 }
                 v8BindingMap.set(bindingId, v8obj);
@@ -42,8 +46,8 @@ class V8Manager private constructor(private val v8: V8){
             function $FUNC_CREATE_JS_PROXY(obj) {
                 return new Proxy(obj, {
                     set: function (target, key, value) {
-                        if (key in target.$KEY_BINDING_FIELD_LIST) {
-                            
+                        if (target.$KEY_BINDING_FIELD_MAP.has(key)) {
+                            console.log(key, ' In Map');
                             let oldValue = target[key];
                             if (oldValue == undefined) {
                                 oldValue = null;
@@ -53,17 +57,29 @@ class V8Manager private constructor(private val v8: V8){
                             if (value == undefined) {
                                 newValue = null;
                             }
-                            let fieldInfo = target.$KEY_BINDING_FIELD_LIST[key]
+                            let fieldInfo = target.$KEY_BINDING_FIELD_MAP.get(key);
                             if (fieldInfo.$KEY_IS_V8BINDING_TYPE) {
                                 // if is V8Binding type
                                 dispatchV8BindingChange(target, fieldInfo, newValue, oldValue);
                             } else {
                                 // other types
-                                dispatchBasicTypeChange(target, fieldInfo, newValue, oldValue)
+                                dispatchBasicTypeChange(target, fieldInfo, newValue, oldValue);
                             }
                         } else {
+                            let oldValue = target[key];
+                            if (oldValue == undefined) {
+                                oldValue = null;
+                            }
                             target[key] = value;
+                            let newValue = value;
+                            if (value == undefined) {
+                                newValue = null;
+                            }
+                            if (target.$KEY_ADDITIONAL_PROPERTIES != undefined && target.$KEY_ADDITIONAL_PROPERTIES.includes(key)) {
+                                dispatchAdditionalProperty(target, key, value, newValue, oldValue);
+                            }
                         }
+                        return true;
                     }
                 })
             }
@@ -124,6 +140,8 @@ class V8Manager private constructor(private val v8: V8){
             arrayOf(V8Object::class.java, V8Object::class.java, Any::class.java, Any::class.java))
         v8.registerJavaMethod(this, "dispatchV8BindingChange", "dispatchV8BindingChange",
             arrayOf(V8Object::class.java, V8Object::class.java, V8Object::class.java, V8Object::class.java))
+        v8.registerJavaMethod(this, "dispatchAdditionalProperty", "dispatchAdditionalProperty",
+            arrayOf(V8Object::class.java, String::class.java, Any::class.java, Any::class.java))
         v8.registerJavaMethod(this, "throwError", "throwError", arrayOf(String::class.java))
         if (BuildConfig.DEBUG) {
             val console = Console()
@@ -140,10 +158,10 @@ class V8Manager private constructor(private val v8: V8){
         if (!isBound(bindingId)) {
             throwError("Not bound for $bindingId")
         }
-        return v8.executeObjectFunction("getBinding", V8Array(v8).apply { add(KEY_BINDING_ID, bindingId) })
+        return v8.executeObjectFunction("getBinding", V8Array(v8).apply { push(bindingId) })
     }
     fun isBound(bindingId: String): Boolean {
-        return v8.executeBooleanFunction("hasBinding", V8Array(v8).apply { add(KEY_BINDING_ID, bindingId) })
+        return v8.executeBooleanFunction("hasBinding", V8Array(v8).apply { push(bindingId) })
     }
 
     internal fun createBinding(obj: V8Binding): V8Object {
@@ -200,6 +218,12 @@ class V8Manager private constructor(private val v8: V8){
 
             obj.onBindingChanged(target, Key.from(fieldInfo), newValue, oldValue)
         }
+    }
+
+    fun dispatchAdditionalProperty(target: V8Object, propertyName: String, newValue: Any?, oldValue: Any?) {
+        val bindingId = target.getString(KEY_BINDING_ID)
+        val obj = bindingMapNative[bindingId] ?: throw IllegalStateException("Illegal state, binding table not sync")
+        obj.onAdditionalPropertyChanged(target, propertyName, newValue, oldValue)
     }
 
     private fun release() {

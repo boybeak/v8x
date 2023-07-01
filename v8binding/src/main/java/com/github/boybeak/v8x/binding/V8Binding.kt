@@ -10,22 +10,29 @@ interface V8Binding {
     }
     fun getBindingId(): String
     fun getMyBinding(v8: V8): V8Object {
-        Log.d(TAG, "getMyBinding")
         return V8Manager.obtain(v8).run {
             if (!isBound(getBindingId())) {
-                Log.d(TAG, "getMyBinding not bound")
                 createBinding(this@V8Binding)
             } else {
-                Log.d(TAG, "getMyBinding bound")
                 getBinding(getBindingId())
             }
         }
     }
+
+    /**
+     * Use this if some properties can not be declared as a native field
+     */
+    fun getAdditionalPropertyNames(): Array<String>? {
+        return null
+    }
+    fun onAdditionalPropertyChanged(target: V8Object, propertyName: String, newValue: Any?, oldValue: Any?) {
+        throw NotImplementedError("onAdditionalPropertyChanged must be implemented if getAdditionalPropertyNames returned nut null nor empty")
+    }
     fun onBindingCreated(target: V8Object, fieldInfo: Key, value: V8Object): V8Binding {
-        throw NotImplementedError("onCreateBinding must be implement when new binding created")
+        throw NotImplementedError("onCreateBinding must be implemented when new binding created")
     }
     fun onBindingDestroyed(target: V8Object, fieldInfo: Key) {
-        throw NotImplementedError("onBindingDestroyed must be implement when binding destroyed")
+        throw NotImplementedError("onBindingDestroyed must be implemented when binding destroyed")
     }
     fun onBindingChanged(target: V8Object, fieldInfo: Key, newValue: Any?, oldValue: Any?)
 }
