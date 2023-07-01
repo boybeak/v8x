@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
             val man = v8.manager
             v8.executeScript(this@MainActivity.readAssetsText("build_in_fields.js"))
         }
+        findViewById<AppCompatButton>(R.id.additionalBtn).setOnClickListener {
+            val man = v8.manager
+            v8.executeScript(this@MainActivity.readAssetsText("additional.js"))
+        }
         findViewById<AppCompatButton>(R.id.mapBtn).setOnClickListener {
             v8.manager
             val map = v8.newMap()

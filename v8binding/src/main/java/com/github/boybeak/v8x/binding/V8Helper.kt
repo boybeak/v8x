@@ -1,5 +1,6 @@
 package com.github.boybeak.v8x.binding
 
+import com.eclipsesource.v8.V8Array
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Field
 import com.github.boybeak.v8x.binding.annotation.V8Method
@@ -49,6 +50,17 @@ object V8Helper {
             field.isAccessible = false
         }
         v8obj.add(V8Manager.KEY_BINDING_FIELD_MAP, bindingMap)
+        if (obj is V8Binding) {
+            val additionalPropertyNames = obj.getAdditionalPropertyNames()
+            if (!additionalPropertyNames.isNullOrEmpty()) {
+                val additionalV8 = V8Array(v8obj.runtime)
+                for (name in additionalPropertyNames) {
+                    additionalV8.push(name)
+                }
+                v8obj.add(V8Manager.KEY_ADDITIONAL_PROPERTIES, additionalV8)
+                additionalV8.close()
+            }
+        }
         bindingMap.close()
     }
     fun isAcceptableV8Type(type: Class<*>): Boolean {
