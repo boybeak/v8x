@@ -7,12 +7,14 @@ import android.util.Log
 import androidx.appcompat.widget.AppCompatButton
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Array
+import com.eclipsesource.v8.V8Function
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.R
 import com.github.boybeak.v8x.app.model.User
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.binding.ext.manager
 import com.github.boybeak.v8x.binding.ext.registerV8Methods
+import com.github.boybeak.v8x.ext.guessName
 import com.github.boybeak.v8x.ext.newMap
 import com.github.boybeak.v8x.ext.set
 
@@ -69,6 +71,12 @@ class MainActivity : AppCompatActivity() {
         @V8Method
         fun getUser(): V8Object {
             return user.getMyBinding(v8)
+        }
+
+        @V8Method
+        fun guessFuncName(func: V8Function) {
+            val guessName = func.guessName
+            Log.d(TAG, "guessFuncName guessName=$guessName")
         }
     }
 
