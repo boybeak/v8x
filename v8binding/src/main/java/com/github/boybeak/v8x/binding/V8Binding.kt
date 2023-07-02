@@ -1,6 +1,5 @@
 package com.github.boybeak.v8x.binding
 
-import android.util.Log
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 

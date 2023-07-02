@@ -118,6 +118,7 @@ class V8Manager private constructor(private val v8: V8){
         }
 
         override fun v8HandleCreated(p0: V8Value?) {
+            Log.d(TAG, "v8HandleCreated thread=${Thread.currentThread().name}")
 //            Log.d(TAG, "v8HandleCreated(obj=${p0.info})")
         }
 

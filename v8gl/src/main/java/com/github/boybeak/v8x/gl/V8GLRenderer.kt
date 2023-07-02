@@ -4,7 +4,7 @@ import android.opengl.GLSurfaceView.Renderer
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Method
-import com.github.boybeak.v8x.ext.registerV8Methods
+import com.github.boybeak.v8x.binding.ext.registerV8Methods
 import com.github.boybeak.v8x.gl.webgl.*
 import java.io.File
 import javax.microedition.khronos.egl.EGLConfig

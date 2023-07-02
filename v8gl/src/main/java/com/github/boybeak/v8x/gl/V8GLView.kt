@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.binding.annotation.V8Method
-import com.github.boybeak.v8x.ext.registerV8Methods
+import com.github.boybeak.v8x.binding.ext.registerV8Methods
 import com.github.boybeak.v8x.gl.webgl.Constants
 import com.github.boybeak.v8x.gl.webgl.ICanvas
 import com.github.boybeak.v8x.gl.webgl.IWebGLRenderingContext
