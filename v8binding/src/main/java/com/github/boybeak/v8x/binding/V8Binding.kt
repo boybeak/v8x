@@ -33,5 +33,5 @@ interface V8Binding {
     fun onBindingDestroyed(target: V8Object, fieldInfo: Key) {
         throw NotImplementedError("onBindingDestroyed must be implemented when binding destroyed")
     }
-    fun onBindingChanged(target: V8Object, fieldInfo: Key, newValue: Any?, oldValue: Any?)
+    fun onBindingChanged(target: V8Object, fieldInfo: Key, newValue: Any?, oldValue: Any?) {}
 }
