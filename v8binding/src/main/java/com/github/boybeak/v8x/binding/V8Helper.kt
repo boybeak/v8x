@@ -6,14 +6,19 @@ import com.github.boybeak.v8x.binding.annotation.V8Field
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.ext.newMap
 import com.github.boybeak.v8x.ext.set
+import java.lang.reflect.Modifier
 
 object V8Helper {
+    private const val TAG = "V8Helper"
     fun registerV8Methods(v8obj: V8Object, otherObj: Any) {
-        for (method in otherObj::class.java.declaredMethods) {
+        for (method in otherObj::class.java.methods) {
             if (!method.isAnnotationPresent(V8Method::class.java)) {
                 continue
             }
             val v8Method = method.getAnnotation(V8Method::class.java) ?: continue
+            if (!Modifier.isPublic(method.modifiers)) {
+                throw IllegalStateException("V8Method must be public")
+            }
             val jsFuncName = v8Method.jsFuncName.ifEmpty { method.name }
             v8obj.registerJavaMethod(otherObj, method.name, jsFuncName, method.parameterTypes)
         }
@@ -21,7 +26,7 @@ object V8Helper {
     fun registerV8Fields(v8obj: V8Object, obj: Any) {
         val bindingMap = v8obj.runtime.newMap() // Create a js map
 
-        for (field in obj::class.java.declaredFields) {
+        for (field in obj::class.java.fields) {
             if (!field.isAnnotationPresent(V8Field::class.java)) {
                 continue
             }

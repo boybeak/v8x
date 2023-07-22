@@ -48,4 +48,10 @@
         android:layout_height="wrap_content"
         android:text="v8Map"
         />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/v8MethodInheritedBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v8Method Inherited"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>

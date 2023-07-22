@@ -11,6 +11,7 @@ import com.eclipsesource.v8.V8Function
 import com.eclipsesource.v8.V8Object
 import com.github.boybeak.v8x.R
 import com.github.boybeak.v8x.app.model.User
+import com.github.boybeak.v8x.binding.V8Binding
 import com.github.boybeak.v8x.binding.annotation.V8Method
 import com.github.boybeak.v8x.binding.ext.manager
 import com.github.boybeak.v8x.binding.ext.registerV8Methods
@@ -29,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val v8 = V8.createV8Runtime()
-        val native = Native(v8)
-        val nativeV8 = V8Object(v8)
-        nativeV8.registerV8Methods(native)
-        v8.add("native", nativeV8)
+//        val native = Native(v8)
+//        val nativeV8 = V8Object(v8)
+//        nativeV8.registerV8Methods(native)
+//        v8.add("native", nativeV8)
         findViewById<AppCompatButton>(R.id.actionBtn).setOnClickListener {
             v8.executeScript(this@MainActivity.readAssetsText("demo.js"))
         }
@@ -64,6 +65,12 @@ class MainActivity : AppCompatActivity() {
                 console.log('map.size=', map.size);
             """.trimIndent())
         }
+        findViewById<AppCompatButton>(R.id.v8MethodInheritedBtn).setOnClickListener {
+            val son = Son()
+            val obj = son.getMyBinding(v8)
+            v8.add("son", obj)
+            v8.executeScript("son.kickKid();")
+        }
     }
 
     private class Native(val v8: V8) {
@@ -78,6 +85,20 @@ class MainActivity : AppCompatActivity() {
             val guessName = func.guessName
             Log.d(TAG, "guessFuncName guessName=$guessName")
         }
+    }
+
+    open class Father : V8Binding {
+        @V8Method
+        fun kickKid() {
+            Log.d(TAG, "kickKid")
+        }
+        override fun getBindingId(): String {
+            return hashCode().toString()
+        }
+    }
+
+    class Son : Father() {
+
     }
 
 }

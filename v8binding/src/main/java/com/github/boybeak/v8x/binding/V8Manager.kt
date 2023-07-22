@@ -144,12 +144,12 @@ class V8Manager private constructor(private val v8: V8){
         v8.registerJavaMethod(this, "dispatchAdditionalProperty", "dispatchAdditionalProperty",
             arrayOf(V8Object::class.java, String::class.java, Any::class.java, Any::class.java))
         v8.registerJavaMethod(this, "throwError", "throwError", arrayOf(String::class.java))
-        if (BuildConfig.DEBUG) {
+        /*if (BuildConfig.DEBUG) {
             val console = Console()
             val consoleV8 = V8Object(v8)
             V8Helper.registerV8Methods(consoleV8, console)
             v8.add("console", consoleV8)
-        }
+        }*/
     }
 
     fun throwError(error: String) {

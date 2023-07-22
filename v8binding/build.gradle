@@ -35,6 +35,12 @@ android {
 dependencies {
     compileOnly 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
     compileOnly project(path: ":v8ext")
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
+    androidTestImplementation project(path: ":v8ext")
 }
 
 afterEvaluate {
